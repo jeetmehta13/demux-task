@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "148548920675",
+    "firebase_url": "https://demux-task.firebaseio.com",
+    "project_id": "demux-task",
+    "storage_bucket": "demux-task.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148548920675:android:9f2b64ebfe3d64c3a85f56",
+        "android_client_info": {
+          "package_name": "com.example.demux_task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148548920675-cff0lurc9gu2rkmde1q41qtgvr81a4ec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA16U8YxkKgBx8obsROsmHoHUa_TajelzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148548920675-cff0lurc9gu2rkmde1q41qtgvr81a4ec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
