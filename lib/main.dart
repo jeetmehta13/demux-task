@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
                     .montserrat(), //TextStyle(fontFamily: 'Comfortaa'),
               ),
             ),
+            home: HomePage(),
           )
         : MaterialApp(
             title: 'Demux Task',
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
               visualDensity: VisualDensity.adaptivePlatformDensity,
               textTheme: GoogleFonts.montserratTextTheme(),
             ),
-            home: HomePage(title: 'Questions'),
+            home: HomePage(),
           );
   }
 }

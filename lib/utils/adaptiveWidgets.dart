@@ -205,3 +205,17 @@ class AdaptiveTextThemeData {
         cupertinoThemeData != typedOther.cupertinoThemeData;
   }
 }
+
+Future showAdaptiveModalSheet({
+  @required BuildContext context,
+  @required WidgetBuilder builder,
+  ShapeBorder shape,
+}) {
+  return misc.isIOS()
+      ? showCupertinoModalPopup(context: context, builder: builder)
+      : showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: builder,
+          shape: (shape == null) ? null : shape);
+}

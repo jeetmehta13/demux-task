@@ -451,6 +451,458 @@
             "job_type": [
                 "Internship"
             ]
+        },
+        {
+            "title": "Two Sum",
+            "difficulty": 1,
+            "link": "https://leetcode.com/problems/two-sum",
+            "companies": [
+                "Microsoft",
+                "Adobe"
+            ],
+            "frequency": "58",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Internship",
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "difficulty": 2,
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Maths"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Longest Substring Without Repeating Characters",
+            "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            "difficulty": 3,
+            "companies": [
+                "Microsoft",
+                "Amazon"
+            ],
+            "frequency": "33",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Strings",
+                "Dynamic Programming"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "difficulty": 2,
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables",
+                "Graphs",
+                "Strings"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Two Sum",
+            "difficulty": 1,
+            "link": "https://leetcode.com/problems/two-sum",
+            "companies": [
+                "Microsoft",
+                "Adobe"
+            ],
+            "frequency": "58",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Internship",
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "difficulty": 2,
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Maths"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Longest Substring Without Repeating Characters",
+            "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            "difficulty": 3,
+            "companies": [
+                "Microsoft",
+                "Amazon"
+            ],
+            "frequency": "33",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Strings",
+                "Dynamic Programming"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "difficulty": 2,
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables",
+                "Graphs",
+                "Strings"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Two Sum",
+            "difficulty": 1,
+            "link": "https://leetcode.com/problems/two-sum",
+            "companies": [
+                "Microsoft",
+                "Adobe"
+            ],
+            "frequency": "58",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Internship",
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "difficulty": 2,
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Maths"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Longest Substring Without Repeating Characters",
+            "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            "difficulty": 3,
+            "companies": [
+                "Microsoft",
+                "Amazon"
+            ],
+            "frequency": "33",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Strings",
+                "Dynamic Programming"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "difficulty": 2,
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables",
+                "Graphs",
+                "Strings"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Two Sum",
+            "difficulty": 1,
+            "link": "https://leetcode.com/problems/two-sum",
+            "companies": [
+                "Microsoft",
+                "Adobe"
+            ],
+            "frequency": "58",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Internship",
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "difficulty": 2,
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "VIT, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Arrays",
+                "Maths"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
+        },
+        {
+            "title": "Longest Substring Without Repeating Characters",
+            "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            "difficulty": 3,
+            "companies": [
+                "Microsoft",
+                "Amazon"
+            ],
+            "frequency": "33",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay",
+                "SRM, Chennai",
+                "IIT, Delhi"
+            ],
+            "topics": [
+                "Strings",
+                "Dynamic Programming"
+            ],
+            "test_type": [
+                "Online",
+                "Interview"
+            ],
+            "trending": "true",
+            "job_type": [
+                "Placement"
+            ]
+        },
+        {
+            "title": "Add Two Numbers",
+            "link": "https://leetcode.com/problems/add-two-numbers",
+            "difficulty": 2,
+            "companies": [
+                "Goldman Sachs",
+                "LinkedIn",
+                "Facebook"
+            ],
+            "frequency": "22",
+            "colleges": [
+                "MIT, Manipal",
+                "IIT, Bombay"
+            ],
+            "topics": [
+                "Arrays",
+                "Hash Tables",
+                "Graphs",
+                "Strings"
+            ],
+            "test_type": [
+                "Online"
+            ],
+            "trending": "false",
+            "job_type": [
+                "Internship"
+            ]
         }
     ]
 }
