@@ -1,9 +1,10 @@
 import 'package:demux_task/utils/adaptiveWidgets.dart';
+import 'package:demux_task/widgets/ErrorCard.dart';
 import 'package:demux_task/widgets/QuestionCard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-
-import 'dart:math';
+import 'package:demux_task/utils/misc.dart' as misc;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -20,7 +21,8 @@ class _HomePageState extends State<HomePage>
   final dbRef = FirebaseDatabase.instance.reference();
 
   List questions;
-  List currentSet;
+  List currentSet = [];
+  int currQuestion = 0;
 
   ScrollController _scrollController = ScrollController();
 
@@ -33,6 +35,17 @@ class _HomePageState extends State<HomePage>
   String selectedCollege = 'All';
   List<String> collegesAvailable = ['All'];
   List<String> companiesAvailable = ['All'];
+  bool completed = false;
+
+  Map<int, String> jobTypeyMap = {
+    1: 'Internship',
+    2: 'Placement',
+  };
+
+  Map<int, String> testTypeMap = {
+    1: 'Online',
+    2: 'Interview',
+  };
 
   @override
   bool get wantKeepAlive => needsRefresh == null ? true : !needsRefresh;
@@ -56,9 +69,12 @@ class _HomePageState extends State<HomePage>
         hideAppBar: false,
         title: 'Questions',
         actions: [
-          IconButton(
-              icon: Icon(Icons.filter_list_outlined),
-              onPressed: () => _showFilter())
+          (misc.isIOS())
+              ? FlatButton(
+                  onPressed: () => _showFilter(), child: Text('Filter'), padding: EdgeInsets.zero,)
+              : IconButton(
+                  icon: Icon(Icons.filter_list_outlined),
+                  onPressed: () => _showFilter())
         ],
         child: (questions != null)
             ? buildMainWidget()
@@ -75,59 +91,163 @@ class _HomePageState extends State<HomePage>
                     case ConnectionState.done:
                       {
                         if (snapshot.hasError) {
-                          return Text("Error");
+                          return RefreshIndicator(
+                              child: ErrorCard(
+                                  'Some Error Occured', Icons.error_outline),
+                              onRefresh: _onRefresh);
                         } else if (!snapshot.hasData)
                           return Center(
                             child: AdaptiveProgressIndicator(),
                           );
-                        questions = snapshot.data;
-                        currentSet = [];
-                        for (var i = 0; i < 13; i++) {
-                          currentSet.add(questions[i]);
+                        if (snapshot.data.length <= 0) {
+                          return RefreshIndicator(
+                              child: ErrorCard(
+                                  'No Questions Found!', Icons.error_outline),
+                              onRefresh: _onRefresh);
                         }
+                        questions = snapshot.data;
+
                         return buildMainWidget();
                       }
                     default:
-                      return Text('Placeholder');
+                      return RefreshIndicator(
+                          child: ErrorCard(
+                              'Some Error Occured', Icons.error_outline),
+                          onRefresh: _onRefresh);
                   }
                 }));
   }
 
   Widget buildMainWidget() {
     if (questions == null || questions.length < 0) {
-      return Text('bruh');
+      return RefreshIndicator(
+          child: ErrorCard('Some Error Occured', Icons.error_outline),
+          onRefresh: _onRefresh);
     }
 
-    if (currentSet == null || currentSet.length < 0) {
-      return Text('bruh');
+    for (var question in questions) {
+      currQuestion++;
+      if (currentSet.length > 10) {
+        break;
+      }
+      currentSet.add(question);
+      if (!difficultySelected[0]) {
+        for (var i = 1; i <= 3; i++) {
+          if (difficultySelected[i] && question['difficulty'] != i) {
+            currentSet.remove(question);
+          }
+        }
+      }
+      if (!jobTypeSelected[0]) {
+        for (var i = 1; i <= 2; i++) {
+          if (jobTypeSelected[i] &&
+              !question['job_type'].contains(jobTypeyMap[i])) {
+            currentSet.remove(question);
+          }
+        }
+      }
+      if (!testTypeSelected[0]) {
+        for (var i = 1; i <= 2; i++) {
+          if (testTypeSelected[i] &&
+              !question['test_type'].contains(testTypeMap[i])) {
+            currentSet.remove(question);
+          }
+        }
+      }
+      int frequency = int.parse(question['frequency']);
+      if (frequency < selectedFrequencyRange.start.toInt() ||
+          frequency > selectedFrequencyRange.end.toInt()) {
+        currentSet.remove(question);
+      }
+      if (selectedCollege != 'All' &&
+          !question['colleges'].contains(selectedCollege)) {
+        currentSet.remove(question);
+      }
+      if (selectedCompany != 'All' &&
+          !question['companies'].contains(selectedCompany)) {
+        currentSet.remove(question);
+      }
     }
 
-    return RefreshIndicator(
-        child: ListView.builder(
-            key: PageStorageKey('List'),
-            controller: _scrollController,
-            itemCount: min(currentSet.length + 1, questions.length),
-            // itemExtent: 60,
-            itemBuilder: (context, index) {
-              if (currentSet.length == index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Center(child: AdaptiveProgressIndicator()),
-                );
-              }
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: QuestionCard(currentSet[index]),
-              );
-            }),
-        onRefresh: _onRefresh);
+    if (currQuestion >= questions.length) {
+      completed = true;
+    }
+
+    if (currentSet.length <= 0) {
+      return RefreshIndicator(
+          child: ErrorCard('No Questions found!\nTry a different filter!',
+              Icons.error_outline),
+          onRefresh: _onRefresh);
+    }
+
+    return (!misc.isIOS())
+        ? RefreshIndicator(
+            child: ListView.builder(
+                key: PageStorageKey('List'),
+                controller: _scrollController,
+                itemCount:
+                    (completed) ? currentSet.length : currentSet.length + 1,
+                // itemExtent: 60,
+                itemBuilder: (context, index) {
+                  if (currentSet.length == index && !completed) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Center(child: AdaptiveProgressIndicator()),
+                    );
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: QuestionCard(currentSet[index]),
+                  );
+                }),
+            onRefresh: _onRefresh)
+        : SafeArea(
+            top: true,
+            child: CustomScrollView(
+              key: PageStorageKey('List'),
+              controller: _scrollController,
+              slivers: [
+                CupertinoSliverRefreshControl(
+                  onRefresh: _onRefresh,
+                ),
+                SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    if (currentSet.length == index && !completed) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Center(child: AdaptiveProgressIndicator()),
+                      );
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: QuestionCard(currentSet[index]),
+                    );
+                  },
+                  childCount:
+                      (completed) ? currentSet.length : currentSet.length + 1,
+                ))
+              ],
+            ),
+          );
   }
 
   Future<Null> _onRefresh() async {
     setState(() {
       needsRefresh = true;
       questions = null;
-      currentSet = null;
+      currentSet = [];
+      selectedFrequencyRange = RangeValues(0.0, 100.0);
+      difficultySelected = [true, false, false, false];
+      trending = false;
+      jobTypeSelected = [true, false, false];
+      testTypeSelected = [true, false, false];
+      selectedCompany = 'All';
+      selectedCollege = 'All';
+      collegesAvailable = ['All'];
+      companiesAvailable = ['All'];
+      currQuestion = 0;
+      completed = false;
     });
   }
 
@@ -156,10 +276,61 @@ class _HomePageState extends State<HomePage>
 
   _addToSet() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    int currlen = currentSet.length;
-    for (var i = currlen; i < min(currlen + 8, questions.length); i++) {
-      // print(i);
-      currentSet.add(questions[i]);
+    int itemsAdded = 0;
+    int firstQuestion = currQuestion;
+    for (var i = firstQuestion; i < questions.length; i++) {
+      currQuestion++;
+      if (itemsAdded > 7) {
+        break;
+      }
+      var question = questions[i];
+      currentSet.add(question);
+      itemsAdded++;
+      if (!difficultySelected[0]) {
+        for (var i = 1; i <= 3; i++) {
+          if (difficultySelected[i] && question['difficulty'] != i) {
+            currentSet.remove(question);
+            itemsAdded--;
+          }
+        }
+      }
+      if (!jobTypeSelected[0]) {
+        for (var i = 1; i <= 2; i++) {
+          if (jobTypeSelected[i] &&
+              !question['job_type'].contains(jobTypeyMap[i])) {
+            itemsAdded--;
+            currentSet.remove(question);
+          }
+        }
+      }
+      if (!testTypeSelected[0]) {
+        for (var i = 1; i <= 2; i++) {
+          if (testTypeSelected[i] &&
+              !question['test_type'].contains(testTypeMap[i])) {
+            itemsAdded--;
+            currentSet.remove(question);
+          }
+        }
+      }
+      int frequency = int.parse(question['frequency']);
+      if (frequency < selectedFrequencyRange.start.toInt() ||
+          frequency > selectedFrequencyRange.end.toInt()) {
+        itemsAdded--;
+        currentSet.remove(question);
+      }
+      if (selectedCollege != 'All' &&
+          !question['colleges'].contains(selectedCollege)) {
+        itemsAdded--;
+        currentSet.remove(question);
+      }
+      if (selectedCompany != 'All' &&
+          !question['companies'].contains(selectedCompany)) {
+        itemsAdded--;
+        currentSet.remove(question);
+      }
+    }
+    if (currQuestion >= questions.length) {
+      completed = true;
     }
     // return;
     setState(() {});
@@ -382,45 +553,50 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                         ),
-                        ToggleButtons(
-                          children: [
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Any"),
+                        Material(
+                          child: ToggleButtons(
+                            children: [
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Any"),
+                                ),
                               ),
-                            ),
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Internship"),
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Internship"),
+                                ),
                               ),
-                            ),
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Placement"),
-                              ),
-                            )
-                          ],
-                          isSelected: newJobTypeSelected,
-                          onPressed: (index) {
-                            setStateOne(
-                              () {
-                                for (var i = 0;
-                                    i < newJobTypeSelected.length;
-                                    i++) {
-                                  if (i == index) {
-                                    newJobTypeSelected[i] = true;
-                                  } else
-                                    newJobTypeSelected[i] = false;
-                                }
-                              },
-                            );
-                          },
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Placement"),
+                                ),
+                              )
+                            ],
+                            isSelected: newJobTypeSelected,
+                            onPressed: (index) {
+                              setStateOne(
+                                () {
+                                  for (var i = 0;
+                                      i < newJobTypeSelected.length;
+                                      i++) {
+                                    if (i == index) {
+                                      newJobTypeSelected[i] = true;
+                                    } else
+                                      newJobTypeSelected[i] = false;
+                                  }
+                                },
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -447,45 +623,50 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                         ),
-                        ToggleButtons(
-                          children: [
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Any"),
+                        Material(
+                          child: ToggleButtons(
+                            children: [
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Any"),
+                                ),
                               ),
-                            ),
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Online Test"),
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Online Test"),
+                                ),
                               ),
-                            ),
-                            Container(
-                              width:
-                                  (MediaQuery.of(context).size.width - 36) / 3,
-                              child: Center(
-                                child: Text("Interview"),
-                              ),
-                            )
-                          ],
-                          isSelected: newTestTypeSelected,
-                          onPressed: (index) {
-                            setStateOne(
-                              () {
-                                for (var i = 0;
-                                    i < newTestTypeSelected.length;
-                                    i++) {
-                                  if (i == index) {
-                                    newTestTypeSelected[i] = true;
-                                  } else
-                                    newTestTypeSelected[i] = false;
-                                }
-                              },
-                            );
-                          },
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 36) /
+                                        3,
+                                child: Center(
+                                  child: Text("Interview"),
+                                ),
+                              )
+                            ],
+                            isSelected: newTestTypeSelected,
+                            onPressed: (index) {
+                              setStateOne(
+                                () {
+                                  for (var i = 0;
+                                      i < newTestTypeSelected.length;
+                                      i++) {
+                                    if (i == index) {
+                                      newTestTypeSelected[i] = true;
+                                    } else
+                                      newTestTypeSelected[i] = false;
+                                  }
+                                },
+                              );
+                            },
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -512,21 +693,23 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                         ),
-                        DropdownButton(
-                            isExpanded: true,
-                            value: newSelectedCompany,
-                            items: companiesAvailable
-                                .map<DropdownMenuItem<String>>(
-                                    (e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
-                                .toList(),
-                            onChanged: (String newvalue) => {
-                                  setStateOne(() {
-                                    newSelectedCompany = newvalue;
-                                  })
-                                }),
+                        Material(
+                          child: DropdownButton(
+                              isExpanded: true,
+                              value: newSelectedCompany,
+                              items: companiesAvailable
+                                  .map<DropdownMenuItem<String>>(
+                                      (e) => DropdownMenuItem<String>(
+                                            value: e,
+                                            child: Text(e),
+                                          ))
+                                  .toList(),
+                              onChanged: (String newvalue) => {
+                                    setStateOne(() {
+                                      newSelectedCompany = newvalue;
+                                    })
+                                  }),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10.0),
                           child: RichText(
@@ -552,21 +735,23 @@ class _HomePageState extends State<HomePage>
                             ),
                           ),
                         ),
-                        DropdownButton(
-                            isExpanded: true,
-                            value: newSelectedCollege,
-                            items: collegesAvailable
-                                .map<DropdownMenuItem<String>>(
-                                    (e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        ))
-                                .toList(),
-                            onChanged: (String newvalue) => {
-                                  setStateOne(() {
-                                    newSelectedCollege = newvalue;
-                                  })
-                                })
+                        Material(
+                          child: DropdownButton(
+                              isExpanded: true,
+                              value: newSelectedCollege,
+                              items: collegesAvailable
+                                  .map<DropdownMenuItem<String>>(
+                                      (e) => DropdownMenuItem<String>(
+                                            value: e,
+                                            child: Text(e),
+                                          ))
+                                  .toList(),
+                              onChanged: (String newvalue) => {
+                                    setStateOne(() {
+                                      newSelectedCollege = newvalue;
+                                    })
+                                  }),
+                        )
                       ],
                     ),
                   ),
@@ -574,13 +759,16 @@ class _HomePageState extends State<HomePage>
               );
             },
           );
-        }).whenComplete(() => setState((){
+        }).whenComplete(() => setState(() {
           selectedFrequencyRange = selectedNewRange;
           selectedCollege = newSelectedCollege;
           selectedCompany = newSelectedCompany;
           difficultySelected = newDifficultySelected;
           jobTypeSelected = newJobTypeSelected;
           testTypeSelected = newTestTypeSelected;
+          currQuestion = 0;
+          currentSet = [];
+          completed = false;
         }));
   }
 }

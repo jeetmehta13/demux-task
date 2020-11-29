@@ -30,15 +30,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return misc.isIOS()
         ? CupertinoApp(
+          
             title: 'Demux Task',
             theme: CupertinoThemeData(
               brightness: Brightness.light,
               textTheme: CupertinoTextThemeData(
                 textStyle: GoogleFonts
-                    .montserrat(), //TextStyle(fontFamily: 'Comfortaa'),
+                    .montserrat(color: Colors.black), //TextStyle(fontFamily: 'Comfortaa'),
               ),
             ),
             home: HomePage(),
+            localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+              DefaultMaterialLocalizations.delegate,
+              DefaultWidgetsLocalizations.delegate,
+            ],
           )
         : MaterialApp(
             title: 'Demux Task',
